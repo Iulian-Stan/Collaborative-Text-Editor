@@ -65,27 +65,40 @@ namespace Editor_Text_Colaborativ
         private void ShowText(string text, Socket s)
         {
             rt.TextChanged -= new System.EventHandler(textChanged);
-            int poz = text.IndexOf(' ');
-            int p = Convert.ToInt32(text.Substring(0, poz++));
-            lock (rt)
+            int poz = 0;
+            int l, p, poz2;
+            while ((poz = text.IndexOf(' ')) != -1)
             {
-                if (poz != text.Length - 1)
-                    rt.Text = rt.Text.Insert(p - text.Length + poz + 2, text.Substring(poz, text.Length - poz - 1));
+                if (text.IndexOf('-') == 0)
+                {
+                    l = Convert.ToInt32(text.Substring(1, poz++));
+                    l *= -1;
+                }
                 else
+                    l = Convert.ToInt32(text.Substring(0, poz++));
+                poz2 = text.IndexOf(' ',poz);
+                p = Convert.ToInt32(text.Substring(poz, (poz2++)-poz));
+                if (l > 0)
+                    rt.Text = rt.Text.Insert(p - l + 1, text.Substring(poz2, l));
+                else
+                {
                     rt.Text = rt.Text.Substring(0, ++p) + rt.Text.Substring(++p);
+                    l = 0;
+                }
                 len = rt.Text.Length;
-            }
-            for (int i = 0; i < list.Count; i++)
-            {
-                if (list[i] != s)
-                    try
-                    {
-                        (list[i] as Socket).Send(Encoding.ASCII.GetBytes(text.Substring(0, text.Length - 1)));
-                    }
-                    catch (SocketException se)
-                    {
-                        list.RemoveAt(i--);
-                    }
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (list[i] != s)
+                        try
+                        {
+                            (list[i] as Socket).Send(Encoding.ASCII.GetBytes(text.Substring(0, poz2 + l)));
+                        }
+                        catch (SocketException se)
+                        {
+                            list.RemoveAt(i--);
+                        }
+                }
+                text = text.Substring(poz2 + l);
             }
             rt.TextChanged += new System.EventHandler(textChanged);
         }
@@ -177,8 +190,9 @@ namespace Editor_Text_Colaborativ
                 try
                 {
                     RichTextBox rtb = sender as RichTextBox;
-                    byte[] msg = Encoding.ASCII.GetBytes((rtb.SelectionStart - 1).ToString() + " " +
-                        (len < rtb.Text.Length ? rtb.Text.Substring(rtb.SelectionStart - rtb.Text.Length + len, rtb.Text.Length - len) : ""));
+                    int l = rtb.Text.Length - len;
+                    byte[] msg = Encoding.ASCII.GetBytes(l + " " + (rtb.SelectionStart - 1).ToString() + " " +
+                         (len < rtb.Text.Length ? rtb.Text.Substring(rtb.SelectionStart - l, l) : ""));
                     len = rtb.Text.Length;
                     for (int i = 0; i < list.Count; i++)
                     {
@@ -203,7 +217,8 @@ namespace Editor_Text_Colaborativ
         {
             if (rt.Text.Length != 0)
             {
-                byte[] msg = Encoding.ASCII.GetBytes((rt.TextLength - 1) + " " + rt.Text);
+                len = rt.Text.Length;
+                byte[] msg = Encoding.ASCII.GetBytes(len + " " + (len-1) + " " + rt.Text);
                 c.Send(msg);
             }
         }

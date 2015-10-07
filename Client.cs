@@ -53,16 +53,28 @@ namespace Editor_Text_Colaborativ
         private void ShowText(string text)
         {
             rt.TextChanged -= new System.EventHandler(textChanged);
-            int poz = text.IndexOf(' ');
-            int p = Convert.ToInt32(text.Substring(0, poz++));
-            lock (rt)
+            int poz = 0;
+            int l, p, poz2;
+            while ((poz = text.IndexOf(' ')) != -1)
             {
-                if (poz != text.Length - 1)
-                    rt.Text = rt.Text.Insert(p - text.Length + poz + 2, text.Substring(poz, text.Length - poz - 1));
+                if (text.IndexOf('-') == 0)
+                {
+                    l = Convert.ToInt32(text.Substring(1, poz++));
+                    l *= -1;
+                }
                 else
+                    l = Convert.ToInt32(text.Substring(0, poz++));
+                poz2 = text.IndexOf(' ', poz);
+                p = Convert.ToInt32(text.Substring(poz, (poz2++) - poz));
+                if (l > 0)
+                    rt.Text = rt.Text.Insert(p - l + 1, text.Substring(poz2, l));
+                else
+                {
                     rt.Text = rt.Text.Substring(0, ++p) + rt.Text.Substring(++p);
+                    l = 0;
+                }
                 len = rt.Text.Length;
-                //rt.AppendText(text);
+                text = text.Substring(poz2 + l);
             }
             rt.TextChanged += new System.EventHandler(textChanged);
         }
@@ -131,7 +143,7 @@ namespace Editor_Text_Colaborativ
                 try
                 {
                     RichTextBox rtb = sender as RichTextBox;
-                    byte[] msg = Encoding.ASCII.GetBytes((rtb.SelectionStart - 1).ToString() + " " +
+                    byte[] msg = Encoding.ASCII.GetBytes((rtb.Text.Length - len) + " " + (rtb.SelectionStart - 1).ToString() + " " +
                          (len < rtb.Text.Length ? rtb.Text.Substring(rtb.SelectionStart - rtb.Text.Length + len, rtb.Text.Length - len) : ""));
                     len = rtb.Text.Length;
                     socClient.Send(msg);

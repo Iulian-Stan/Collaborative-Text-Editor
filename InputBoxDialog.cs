@@ -70,26 +70,26 @@ namespace Editor_Text_Colaborativ
             // 
             // lblPrompt
             // 
-            this.lblPrompt.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                            | System.Windows.Forms.AnchorStyles.Left)
-                            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblPrompt.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblPrompt.BackColor = System.Drawing.SystemColors.Control;
             this.lblPrompt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblPrompt.Location = new System.Drawing.Point(12, 9);
             this.lblPrompt.Name = "lblPrompt";
-            this.lblPrompt.Size = new System.Drawing.Size(302, 82);
+            this.lblPrompt.Size = new System.Drawing.Size(84, 30);
             this.lblPrompt.TabIndex = 3;
             // 
             // txtInput
             // 
-            this.txtInput.Location = new System.Drawing.Point(8, 100);
+            this.txtInput.Location = new System.Drawing.Point(11, 8);
             this.txtInput.Name = "txtInput";
-            this.txtInput.Size = new System.Drawing.Size(379, 20);
+            this.txtInput.Size = new System.Drawing.Size(156, 20);
             this.txtInput.TabIndex = 0;
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(320, 10);
+            this.btnOK.Location = new System.Drawing.Point(11, 41);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 25);
             this.btnOK.TabIndex = 4;
@@ -100,7 +100,7 @@ namespace Editor_Text_Colaborativ
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(320, 41);
+            this.btnCancel.Location = new System.Drawing.Point(92, 41);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 25);
             this.btnCancel.TabIndex = 5;
@@ -114,7 +114,7 @@ namespace Editor_Text_Colaborativ
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.BackColor = System.Drawing.SystemColors.Control;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(398, 128);
+            this.ClientSize = new System.Drawing.Size(180, 76);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.txtInput);
@@ -128,6 +128,7 @@ namespace Editor_Text_Colaborativ
             this.Load += new System.EventHandler(this.InputBox_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
         private System.Windows.Forms.Button btnCancel;
         #endregion
